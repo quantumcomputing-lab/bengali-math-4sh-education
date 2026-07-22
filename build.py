@@ -10,6 +10,36 @@ for fn in os.listdir('img/diagrams'):
     if m:
         DIAG[int(m.group(1))] = fn
 
+# ── Critical CSS ──
+# Sliced straight out of css/style.css at build time (never hand-copied, so
+# it can't drift out of sync): reset/vars/base + header + hero, the only
+# things visible before first scroll. The full stylesheet is then loaded
+# async (preload+swap) so it doesn't block first paint -- PageSpeed's mobile
+# report showed css/style.css as the only remaining render-blocking request
+# once the Google Fonts CSS was already made non-blocking.
+def _slice(path, start_marker, end_marker):
+    css = open(path, encoding='utf-8').read()
+    s = css.find(start_marker)
+    e = css.find(end_marker, s)
+    return css[s:e].strip()
+
+_css = open('css/style.css', encoding='utf-8').read()
+CRITICAL_CSS = "\n".join([
+    _slice('css/style.css', '*, *::before, *::after', '/* ═══════════════════════════════════════════\n   HEADER'),
+    _slice('css/style.css', '.site-header {', '/* ═══════════════════════════════════════════\n   MOBILE NAV'),
+    _slice('css/style.css', '.slab-first {', '/* ═══════════════════════════════════════════\n   FADE-IN'),
+    # mobile overrides needed for header/hero at first paint (< 900px) --
+    # MUST stay inside the same media queries as the full stylesheet, or
+    # this would hide desktop nav / force single-column on desktop too.
+    "@media (max-width:900px){"
+    ".desktop-nav{display:none}.btn-cta{display:none}.hamburger{display:flex}"
+    ".logo{flex-shrink:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}"
+    ".slab-first-inner{padding:3.5rem 1.5rem}"
+    "}"
+    "@media (max-width:600px){:root{--section-py:64px}.slab-first-inner{padding:2.5rem 1.25rem}"
+    ".slab-first .slab-text h1{font-size:1.45rem}}",
+])
+
 # (num, title, subhead, [body paragraphs], cta line)
 CH = [
 (1, "Sets and Relations",
@@ -364,7 +394,17 @@ HEAD = '''<!DOCTYPE html>
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&display=swap"></noscript>
 
     <link rel="preload" as="image" href="img/hero-math.webp" fetchpriority="high">
-    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Critical (above-the-fold: reset/vars/base + header + hero) CSS inlined
+         so first paint doesn't wait on an external stylesheet round trip.
+         css/style.css itself was PageSpeed's last remaining render-blocking
+         request on mobile once the font CSS was made non-blocking -- it's
+         now loaded the same preload+swap way; everything below the fold is
+         unstyled for a beat on a very slow connection, which is an
+         acceptable trade since nothing below the fold is visible yet. -->
+    <style>__CRITICAL_CSS__</style>
+    <link rel="preload" as="style" href="css/style.css" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
     <script src="js/main.js" defer></script>
 </head>
 <body>
@@ -562,6 +602,8 @@ def slab(num, title, subhead, bodies, cta):
         </section>
 ''' % (num, title, slab_cls, num, side_cls, diag, title, num, title,
        subhead, body_html, cta, title, title)
+
+HEAD = HEAD.replace('__CRITICAL_CSS__', CRITICAL_CSS)
 
 out = [HEAD]
 out.append(contact_slab("contact", "তোমার ভবিষ্যৎ, তোমার ভাষায়। আজ থেকেই শুরু করো।", light=True))
