@@ -27,6 +27,11 @@
 
 html { scroll-behavior: smooth; font-size: 20px; }
 
+/* Offset in-page anchor jumps so a section's heading isn't hidden behind
+   the position:fixed 72px header (Contents dropdown, drawer, nav, footer
+   sitemap, and every "Start Today" -> #contact link rely on this). */
+section[id] { scroll-margin-top: calc(var(--header-h) + 1.5rem); }
+
 body {
     font-family: var(--font-bengali);
     color: var(--body-text);
@@ -306,6 +311,10 @@ a.slab-cta {
 .slab-dark .slab-text p  { color: rgba(255,255,255,0.82); }
 .slab-dark .slab-subhead { color: #fff; }
 .slab-dark .pull-quote   { color: #fff; }
+/* Full crimson (#A51C30) is only ~2.3:1 on the dark slab bg — below WCAG AA.
+   Use a lightened crimson for the small label + CTA text on dark slabs (~6:1). */
+.slab-dark .section-label,
+.slab-dark .slab-cta { color: #E58A98; }
 
 /* ── Alt background slab ── */
 .slab-alt { background: var(--bg-alt); }
