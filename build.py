@@ -318,16 +318,16 @@ HEAD = '''<!DOCTYPE html>
     <meta property="og:site_name"   content="4sh.education">
     <meta property="og:title"       content="বাংলা মাধ্যমে Mathematics — Class 11-12 Foundations">
     <meta property="og:description" content="৩৫টি chapter, Sets and Relations থেকে Statistics — প্রতিটা chapter শুরু হয় সেই আসল problem দিয়ে, কোনো equation ছাড়াই গল্পের মতো।">
-    <meta property="og:image"       content="https://bengali.math.4sh.education/img/hero-math.webp">
-    <meta property="og:image:width"  content="867">
-    <meta property="og:image:height" content="622">
+    <meta property="og:image"       content="https://bengali.math.4sh.education/img/og-image.jpg">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:locale"      content="bn_IN">
 
     <!-- Twitter / X Card -->
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="বাংলা মাধ্যমে Mathematics — Class 11-12 Foundations">
     <meta name="twitter:description" content="৩৫টি chapter, Sets and Relations থেকে Statistics — কোনো equation ছাড়াই গল্পের মতো।">
-    <meta name="twitter:image"       content="https://bengali.math.4sh.education/img/hero-math.webp">
+    <meta name="twitter:image"       content="https://bengali.math.4sh.education/img/og-image.jpg">
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.svg">
@@ -537,7 +537,7 @@ def slab(num, title, subhead, bodies, cta):
             <div class="slab-inner %s">
                 <div class="slab-image">
                     <img src="img/diagrams/%s"
-                         alt="%s — chapter illustration diagram"
+                         alt="%s — বাংলা মাধ্যমে Class 11-12 Mathematics অধ্যায়ের চিত্র"
                          width="1024" height="1536"
                          loading="lazy">
                 </div>
