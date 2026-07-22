@@ -355,7 +355,13 @@ HEAD = '''<!DOCTYPE html>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts CSS loaded non-render-blocking (preload + swap): a plain
+         stylesheet link here blocks first paint on the whole cross-origin
+         CSS -> gstatic font-file chain (~2s on mobile per PageSpeed). Bengali
+         text paints immediately in the system fallback, then swaps to Hind
+         Siliguri. -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&display=swap"></noscript>
 
     <link rel="preload" as="image" href="img/hero-math.webp" fetchpriority="high">
     <link rel="stylesheet" href="css/style.css">
