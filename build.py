@@ -495,7 +495,8 @@ FOOTER = '''
                 <a href="#home">Home</a>
                 <a href="#founder">About</a>
                 <a href="#contact">Contact</a>
-                <a href="https://bengali.4sh.education/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+                <a href="https://4shfoundation.org/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
+                <a href="https://4shfoundation.org/terms.html" target="_blank" rel="noopener">Terms of Service</a>
             </nav>
             <div class="footer-contact">
                 <span class="footer-nav-title">Contact</span>
